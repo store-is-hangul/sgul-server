@@ -22,15 +22,9 @@ public class WebSocketAuthConfig implements ChannelInterceptor {
             message, StompHeaderAccessor.class
         );
 
-        if (StompCommand.CONNECT.equals(accessor.getCommand())) {
+        if (accessor != null) {
             String userId = accessor.getFirstNativeHeader("userId");
-
-            if (userId != null) {
-                Authentication auth = new UsernamePasswordAuthenticationToken(
-                    userId, null, null
-                );
-                accessor.setUser(auth); // Principal 설정
-            }
+            accessor.getSessionAttributes().put("userId", userId);
         }
 
         return message;

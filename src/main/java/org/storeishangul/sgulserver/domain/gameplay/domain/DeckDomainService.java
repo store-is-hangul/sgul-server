@@ -1,4 +1,4 @@
-package org.storeishangul.sgulserver.domain.deck.domain.deck;
+package org.storeishangul.sgulserver.domain.gameplay.domain;
 
 
 import lombok.RequiredArgsConstructor;
