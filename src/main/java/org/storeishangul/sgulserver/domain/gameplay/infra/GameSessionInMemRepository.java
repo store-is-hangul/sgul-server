@@ -14,13 +14,16 @@ public class GameSessionInMemRepository implements GameSessionRepository{
     }
 
     @Override
-    public void save(GameSession gameSession) {
+    public GameSession save(GameSession gameSession) {
         //TODO
+
+        return null;
     }
 
     @Override
-    public void update(GameSession gameSession) {
+    public GameSession update(GameSession gameSession) {
         //TODO
+        return null;
     }
 
     @Override
