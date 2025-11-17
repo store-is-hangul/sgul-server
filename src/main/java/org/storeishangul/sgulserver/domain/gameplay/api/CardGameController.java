@@ -5,7 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
+import org.storeishangul.sgulserver.domain.gameplay.api.dto.request.CalculatePointRequest;
+import org.storeishangul.sgulserver.domain.gameplay.api.dto.request.DrawRequest;
 import org.storeishangul.sgulserver.domain.gameplay.api.dto.response.GameResponse;
 import org.storeishangul.sgulserver.domain.gameplay.application.GamePlayApplicationService;
 import org.storeishangul.sgulserver.domain.gameplay.domain.GameSessionService;
@@ -14,16 +18,54 @@ import org.storeishangul.sgulserver.domain.gameplay.domain.GameSessionService;
 @RequiredArgsConstructor
 public class CardGameController {
 
+    private final SimpMessagingTemplate messagingTemplate;
     private final GamePlayApplicationService gamePlayApplicationService;
 
-    // TODO:
     @MessageMapping("/game/start")
-    @SendTo("/user/queue/game")
-    public GameResponse startGame(SimpMessageHeaderAccessor accessor) {
+    public void startGame(SimpMessageHeaderAccessor accessor) {
 
-        return gamePlayApplicationService.startGame(
-            (String) accessor.getSessionAttributes().get("userId"),
-            accessor.getSessionId()
+        String userId = (String) accessor.getSessionAttributes().get("userId");
+
+        messagingTemplate.convertAndSendToUser(
+            userId,
+            "/queue/game",
+            gamePlayApplicationService.startGame(
+                userId,
+                accessor.getSessionId()
+            )
+        );
+    }
+
+    @MessageMapping("/game/draw")
+    public void drawCards(SimpMessageHeaderAccessor accessor, DrawRequest request) {
+
+        String userId = (String) accessor.getSessionAttributes().get("userId");
+
+        messagingTemplate.convertAndSendToUser(
+            userId,
+            "/queue/game",
+            gamePlayApplicationService.drawCards(
+                userId,
+                accessor.getSessionId(),
+                request
+            )
+        );
+    }
+
+    @MessageMapping("/game/point")
+    @SendToUser("/queue/point")
+    public void calculatePoints(SimpMessageHeaderAccessor accessor, CalculatePointRequest request) {
+
+        String userId = (String) accessor.getSessionAttributes().get("userId");
+
+        messagingTemplate.convertAndSendToUser(
+            userId,
+            "/queue/point",
+            gamePlayApplicationService.calculatePoint(
+                userId,
+                accessor.getSessionId(),
+                request
+            )
         );
     }
 }
