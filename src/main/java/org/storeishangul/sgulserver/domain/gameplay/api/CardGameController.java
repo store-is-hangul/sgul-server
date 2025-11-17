@@ -24,9 +24,9 @@ public class CardGameController {
     private final GamePlayApplicationService gamePlayApplicationService;
 
     @MessageMapping("/game/start")
-    public void startGame(SimpMessageHeaderAccessor accessor) {
+    public void startGame(Principal principal, SimpMessageHeaderAccessor accessor) {
 
-        String userId = (String) accessor.getSessionAttributes().get("userId");
+        String userId = principal.getName();
 
         messagingTemplate.convertAndSendToUser(
             userId,
@@ -39,9 +39,9 @@ public class CardGameController {
     }
 
     @MessageMapping("/game/draw")
-    public void drawCards(SimpMessageHeaderAccessor accessor, DrawRequest request) {
+    public void drawCards(Principal principal, SimpMessageHeaderAccessor accessor, DrawRequest request) {
 
-        String userId = (String) accessor.getSessionAttributes().get("userId");
+        String userId = principal.getName();
 
         messagingTemplate.convertAndSendToUser(
             userId,
@@ -56,9 +56,9 @@ public class CardGameController {
 
     @MessageMapping("/game/point")
     @SendToUser("/queue/point")
-    public void calculatePoints(SimpMessageHeaderAccessor accessor, CalculatePointRequest request) {
+    public void calculatePoints(Principal principal, SimpMessageHeaderAccessor accessor, CalculatePointRequest request) {
 
-        String userId = (String) accessor.getSessionAttributes().get("userId");
+        String userId = principal.getName();
 
         messagingTemplate.convertAndSendToUser(
             userId,

@@ -1,5 +1,7 @@
 package org.storeishangul.sgulserver.common.config;
 
+import java.security.Principal;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +30,10 @@ public class WebSocketAuthConfig implements ChannelInterceptor {
 
         if (StompCommand.CONNECT.equals(accessor.getCommand())) {
             String userId = accessor.getFirstNativeHeader("userId");
-            accessor.getSessionAttributes().put("userId", userId);
+            Authentication auth =
+                new UsernamePasswordAuthenticationToken(userId, null, List.of());
+
+            accessor.setUser(auth);
             log.warn("CONNECTED: {}", userId);
         }
 
