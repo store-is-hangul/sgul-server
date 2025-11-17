@@ -16,7 +16,7 @@ public class WebSocketExceptionHandler {
     @SendToUser("/queue/errors")
     public WebsocketExceptionResponse handleIllegalArgument(CustomException e) {
 
-        log.error("Custom Exception: {}", e.getMessage());
+        log.error("Custom Exception: {}", e.getMessage(), e);
         return WebsocketExceptionResponse.from(e.getType());
     }
 
@@ -24,7 +24,7 @@ public class WebSocketExceptionHandler {
     @SendToUser("/queue/errors")
     public WebsocketExceptionResponse handleIllegalArgument(RuntimeException e) {
 
-        log.error("Internal Server Error: {}", e.getMessage());
+        log.error("Internal Server Error: {}", e.getMessage(), e);
         return WebsocketExceptionResponse.internalServerError();
     }
 }
