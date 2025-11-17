@@ -1,6 +1,7 @@
 package org.storeishangul.sgulserver.common.config;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
@@ -11,6 +12,7 @@ import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
+@Slf4j
 @Configuration
 @RequiredArgsConstructor
 public class WebSocketAuthConfig implements ChannelInterceptor {
@@ -21,6 +23,8 @@ public class WebSocketAuthConfig implements ChannelInterceptor {
         StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(
             message, StompHeaderAccessor.class
         );
+
+        log.warn("MESSAGE: {}", message.getHeaders() + "\n" + message.getPayload());
 
         if (accessor != null) {
             String userId = accessor.getFirstNativeHeader("userId");
