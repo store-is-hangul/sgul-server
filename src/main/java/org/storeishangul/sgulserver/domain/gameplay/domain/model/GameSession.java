@@ -16,6 +16,7 @@ public class GameSession {
     private int totalScore;
     private LocalDateTime lastModifiedAt;
 
+    //TODO: 첫 드로우 카드수  다시 고려
     private static final int INITIAL_DRAW_COUNT = 8;
 
     private GameSession(String userId, String sessionId, Deck deck, Hand hand, int totalScore) {
@@ -50,6 +51,7 @@ public class GameSession {
 
     public void drawBalancedCards(int count) {
 
+        //TODO: 첫 드로우는 밸런스있게 드로우
 
     }
 
@@ -69,6 +71,7 @@ public class GameSession {
 
     public void calculatePoints(String assembledWord) {
 
+        //TODO: 카드별 점수 고려 (카드 별 점수 합산 * 글자수)
         this.totalScore += assembledWord.length();
     }
 }

@@ -14,5 +14,6 @@ public class DictionaryService {
         return HangulComposer.compose(characters);
 
         //TODO: 단어 유효성 체크
+        // 외부 API
     }
 }
