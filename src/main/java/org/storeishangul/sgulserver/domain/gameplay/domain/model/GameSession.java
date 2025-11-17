@@ -48,18 +48,27 @@ public class GameSession {
         drawCards(INITIAL_DRAW_COUNT);
     }
 
+    public void drawBalancedCards(int count) {
+
+
+    }
+
     public void drawCards(int count) {
 
-        //TODO: 자음 모음 최소 개수 보장
         while (count > 0) {
             Card card = this.deck.singleDraw();
 
-            if(card == null) {
+            if (card == null) {
                 return;
             }
 
             this.hand.putNewCard(card);
             count--;
         }
+    }
+
+    public void calculatePoints(String assembledWord) {
+
+        this.totalScore += assembledWord.length();
     }
 }

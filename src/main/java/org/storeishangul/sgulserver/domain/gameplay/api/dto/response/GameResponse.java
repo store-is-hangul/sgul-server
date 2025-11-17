@@ -12,16 +12,16 @@ public class GameResponse {
 
     private String userId;
     private String sessionId;
-    private DeckApiDto deck;
+    private int deckCardsCount;
     private HandApiDto hand;
     private int totalScore;
     private LocalDateTime lastModifiedAt;
 
-    public GameResponse(String userId, String sessionId, DeckApiDto deck, HandApiDto hand, int totalScore,
+    public GameResponse(String userId, String sessionId, int deckCardsCount, HandApiDto hand, int totalScore,
         LocalDateTime lastModifiedAt) {
         this.userId = userId;
         this.sessionId = sessionId;
-        this.deck = deck;
+        this.deckCardsCount = deckCardsCount;
         this.hand = hand;
         this.totalScore = totalScore;
         this.lastModifiedAt = lastModifiedAt;
@@ -36,7 +36,7 @@ public class GameResponse {
         return new GameResponse(
             gameSession.getUserId(),
             gameSession.getSessionId(),
-            DeckApiDto.fromDeck(gameSession.getDeck()),
+            gameSession.getDeck() == null ? 0 : gameSession.getDeck().getCardsCount(),
             HandApiDto.fromHand(gameSession.getHand()),
             gameSession.getTotalScore(),
             gameSession.getLastModifiedAt()
@@ -45,15 +45,20 @@ public class GameResponse {
 
     public static class DeckApiDto {
 
-        private List<CardApiDto> deck;
+        private List<CardApiDto> consonantDeck;
+        private List<CardApiDto> vowelDeck;
 
-        public DeckApiDto(List<CardApiDto> deck) {
-            this.deck = deck;
+        public DeckApiDto(List<CardApiDto> consonantDeck, List<CardApiDto> vowelDeck) {
+            this.consonantDeck = consonantDeck;
+            this.vowelDeck = vowelDeck;
         }
 
         public static DeckApiDto fromDeck(Deck deck) {
 
-            return new DeckApiDto(deck.getDeck().stream().map(CardApiDto::fromCard).toList());
+            return new DeckApiDto(
+                deck.getConsonantDeck().stream().map(CardApiDto::fromCard).toList(),
+                deck.getVowelDeck().stream().map(CardApiDto::fromCard).toList()
+            );
         }
     }
 
