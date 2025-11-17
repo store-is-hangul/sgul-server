@@ -2,12 +2,14 @@ package org.storeishangul.sgulserver.domain.gameplay.api.dto.response;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.Getter;
 import org.storeishangul.sgulserver.domain.gameplay.domain.model.GameSession;
 import org.storeishangul.sgulserver.domain.gameplay.domain.support.CardType;
 import org.storeishangul.sgulserver.domain.gameplay.domain.vo.Card;
 import org.storeishangul.sgulserver.domain.gameplay.domain.vo.Deck;
 import org.storeishangul.sgulserver.domain.gameplay.domain.vo.Hand;
 
+@Getter
 public class GameResponse {
 
     private String userId;
@@ -43,6 +45,7 @@ public class GameResponse {
         );
     }
 
+    @Getter
     public static class DeckApiDto {
 
         private List<CardApiDto> consonantDeck;
@@ -62,6 +65,7 @@ public class GameResponse {
         }
     }
 
+    @Getter
     public static class HandApiDto {
 
         private List<CardApiDto> cards;
@@ -76,6 +80,7 @@ public class GameResponse {
         }
     }
 
+    @Getter
     public static class CardApiDto {
 
         private CardType cardType;

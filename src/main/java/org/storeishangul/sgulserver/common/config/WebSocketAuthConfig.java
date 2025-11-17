@@ -29,6 +29,7 @@ public class WebSocketAuthConfig implements ChannelInterceptor {
         if (StompCommand.CONNECT.equals(accessor.getCommand())) {
             String userId = accessor.getFirstNativeHeader("userId");
             accessor.getSessionAttributes().put("userId", userId);
+            log.warn("CONNECTED: {}", userId);
         }
 
         return message;

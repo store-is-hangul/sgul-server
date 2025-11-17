@@ -27,7 +27,6 @@ public class CardGameController {
     public void startGame(SimpMessageHeaderAccessor accessor) {
 
         String userId = (String) accessor.getSessionAttributes().get("userId");
-        log.warn("CONNECTED: {}", userId);
 
         messagingTemplate.convertAndSendToUser(
             userId,
