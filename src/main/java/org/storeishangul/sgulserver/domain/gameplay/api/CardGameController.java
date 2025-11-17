@@ -2,6 +2,7 @@ package org.storeishangul.sgulserver.domain.gameplay.api;
 
 import java.security.Principal;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -14,6 +15,7 @@ import org.storeishangul.sgulserver.domain.gameplay.api.dto.response.GameRespons
 import org.storeishangul.sgulserver.domain.gameplay.application.GamePlayApplicationService;
 import org.storeishangul.sgulserver.domain.gameplay.domain.GameSessionService;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class CardGameController {
@@ -25,6 +27,7 @@ public class CardGameController {
     public void startGame(SimpMessageHeaderAccessor accessor) {
 
         String userId = (String) accessor.getSessionAttributes().get("userId");
+        log.warn("CONNECTED: {}", userId);
 
         messagingTemplate.convertAndSendToUser(
             userId,
