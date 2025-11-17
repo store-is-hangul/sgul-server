@@ -45,7 +45,7 @@ public class CardGameController {
 
         messagingTemplate.convertAndSendToUser(
             userId,
-            "/queue/game",
+            "/queue/draw",
             gamePlayApplicationService.drawCards(
                 userId,
                 accessor.getSessionId(),
@@ -55,7 +55,6 @@ public class CardGameController {
     }
 
     @MessageMapping("/game/point")
-    @SendToUser("/queue/point")
     public void calculatePoints(Principal principal, SimpMessageHeaderAccessor accessor, CalculatePointRequest request) {
 
         String userId = principal.getName();
