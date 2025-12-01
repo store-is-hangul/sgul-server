@@ -38,6 +38,7 @@ public class GamePlayApplicationService {
         GameSession gameSession = gameSessionService.findSessionByUserIdOrElseThrow(userId, sessionId);
         String assembledWord = dictionaryService.makeWordAndValidate(request.getCards());
         gameSession.calculatePoints(request.getCards(), assembledWord);
+        gameSession.discardCardsFromHand(request.getCards());
 
         return CalculatePointsResponse.of(gameSession, assembledWord);
     }

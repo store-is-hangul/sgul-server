@@ -83,4 +83,9 @@ public class GameSession {
         int sum = cards.stream().mapToInt(c -> c.getPoint().getPoint()).sum();
         this.totalScore += sum * assembledWord.length();
     }
+
+    public void discardCardsFromHand(List<Card> cards) {
+
+        this.hand.discard(cards);
+    }
 }
