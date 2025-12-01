@@ -36,8 +36,8 @@ public class GamePlayApplicationService {
         CalculatePointRequest request) {
 
         GameSession gameSession = gameSessionService.findSessionByUserIdOrElseThrow(userId, sessionId);
-        String assembledWord = dictionaryService.makeWordAndValidate(request.getCharacters());
-        gameSession.calculatePoints(assembledWord);
+        String assembledWord = dictionaryService.makeWordAndValidate(request.getCards());
+        gameSession.calculatePoints(request.getCards(), assembledWord);
 
         return CalculatePointsResponse.of(gameSession, assembledWord);
     }

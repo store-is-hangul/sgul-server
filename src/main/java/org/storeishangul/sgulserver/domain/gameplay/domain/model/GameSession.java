@@ -1,6 +1,7 @@
 package org.storeishangul.sgulserver.domain.gameplay.domain.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Getter;
 import org.storeishangul.sgulserver.domain.gameplay.domain.support.CardType;
 import org.storeishangul.sgulserver.domain.gameplay.domain.vo.Card;
@@ -77,9 +78,9 @@ public class GameSession {
         }
     }
 
-    public void calculatePoints(String assembledWord) {
+    public void calculatePoints(List<Card> cards, String assembledWord) {
 
-        //TODO: 카드별 점수 고려 (카드 별 점수 합산 * 글자수)
-        this.totalScore += assembledWord.length();
+        int sum = cards.stream().mapToInt(c -> c.getPoint().getPoint()).sum();
+        this.totalScore += sum * assembledWord.length();
     }
 }

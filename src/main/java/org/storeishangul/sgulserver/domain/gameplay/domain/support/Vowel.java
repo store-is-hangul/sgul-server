@@ -1,5 +1,6 @@
 package org.storeishangul.sgulserver.domain.gameplay.domain.support;
 
+import java.util.Arrays;
 import lombok.Getter;
 
 /**
@@ -8,23 +9,31 @@ import lombok.Getter;
 
 @Getter
 public enum Vowel {
-    ㅏ("1"),
-    ㅑ("2"),
-    ㅓ("3"),
-    ㅕ("4"),
-    ㅗ("5"),
-    ㅛ("6"),
-    ㅜ("7"),
-    ㅠ("8"),
-    ㅡ("9"),
+    ㅏ("01"),
+    ㅑ("02"),
+    ㅓ("03"),
+    ㅕ("04"),
+    ㅗ("05"),
+    ㅛ("06"),
+    ㅜ("07"),
+    ㅠ("08"),
+    ㅡ("09"),
     ㅣ("10"),
-    ㅐ("11"),
-    ㅔ("12"),
+//    ㅐ("11"),
+//    ㅔ("12"),
     ;
 
     private String code;
 
     Vowel(String code) {
         this.code = code;
+    }
+
+    public static Vowel findByCode(String code) {
+
+        return Arrays.stream(values())
+            .filter(vowel -> vowel.code.equals(code))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Invalid vowel code: " + code));
     }
 }

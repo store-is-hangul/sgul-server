@@ -1,5 +1,6 @@
 package org.storeishangul.sgulserver.domain.gameplay.domain.support;
 
+import java.util.Arrays;
 import lombok.Getter;
 
 /**
@@ -7,15 +8,15 @@ import lombok.Getter;
  */
 @Getter
 public enum Consonant {
-    ㄱ("1"),
-    ㄴ("2"),
-    ㄷ("3"),
-    ㄹ("4"),
-    ㅁ("5"),
-    ㅂ("6"),
-    ㅅ("7"),
-    ㅇ("8"),
-    ㅈ("9"),
+    ㄱ("01"),
+    ㄴ("02"),
+    ㄷ("03"),
+    ㄹ("04"),
+    ㅁ("05"),
+    ㅂ("06"),
+    ㅅ("07"),
+    ㅇ("08"),
+    ㅈ("09"),
     ㅊ("10"),
     ㅋ("11"),
     ㅌ("12"),
@@ -27,5 +28,14 @@ public enum Consonant {
 
     Consonant(String code) {
         this.code = code;
+    }
+
+
+    public static Consonant findByCode(String code) {
+
+        return Arrays.stream(values())
+            .filter(consonant -> consonant.code.equals(code))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Invalid consonant code: " + code));
     }
 }
