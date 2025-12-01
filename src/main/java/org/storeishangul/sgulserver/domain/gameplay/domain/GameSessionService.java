@@ -16,7 +16,7 @@ public class GameSessionService {
     public GameSession startNewGameSession(String userId, String sessionId) {
 
         GameSession gameSession = GameSession.init(userId, sessionId);
-        gameSession.drawCards();
+        gameSession.drawBalancedCards();
         gameSessionRepository.save(gameSession);
 
         return gameSession;

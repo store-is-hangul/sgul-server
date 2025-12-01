@@ -1,9 +1,31 @@
 package org.storeishangul.sgulserver.domain.gameplay.domain.support;
 
+import lombok.Getter;
+
 /**
  * 자음
  */
-//TODO: 카드별 점수, 코드
+@Getter
 public enum Consonant {
-    ㄱ, ㄴ, ㄷ, ㄹ, ㅁ, ㅂ, ㅅ, ㅇ, ㅈ, ㅊ, ㅋ, ㅌ, ㅍ, ㅎ,
+    ㄱ("1"),
+    ㄴ("2"),
+    ㄷ("3"),
+    ㄹ("4"),
+    ㅁ("5"),
+    ㅂ("6"),
+    ㅅ("7"),
+    ㅇ("8"),
+    ㅈ("9"),
+    ㅊ("10"),
+    ㅋ("11"),
+    ㅌ("12"),
+    ㅍ("13"),
+    ㅎ("14"),
+    ;
+
+    private String code;
+
+    Consonant(String code) {
+        this.code = code;
+    }
 }
