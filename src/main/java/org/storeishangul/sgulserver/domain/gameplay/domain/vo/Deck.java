@@ -9,6 +9,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Random;
 import lombok.Getter;
+import org.storeishangul.sgulserver.domain.gameplay.domain.support.CardPoint;
 import org.storeishangul.sgulserver.domain.gameplay.domain.support.CardType;
 import org.storeishangul.sgulserver.domain.gameplay.domain.support.Consonant;
 import org.storeishangul.sgulserver.domain.gameplay.domain.support.Vowel;
@@ -19,7 +20,6 @@ public class Deck {
     private Deque<Card> consonantDeck;
     private Deque<Card> vowelDeck;
 
-    private static final int COPIES_PER_CARD = 3;
     private static final SecureRandom RANDOM = new SecureRandom();
     private static final Random random = new Random();
 
@@ -40,27 +40,38 @@ public class Deck {
         }
     }
 
-    public static Deck buildNewDeck() {
+    @Nullable
+    public Card singleDraw(CardType type) {
+        if(validateDeckEmpty())
+            return null;
 
-        return buildNewDeck(COPIES_PER_CARD);
+        if(CardType.VOWEL == type) {
+            return (vowelDeck != null && !vowelDeck.isEmpty()) ? vowelDeck.removeFirst() : null;
+        } else {
+            return (consonantDeck != null && !consonantDeck.isEmpty()) ? consonantDeck.removeFirst() : null;
+        }
     }
 
-    private static Deck buildNewDeck(int copiesPerCard) {
+    public static Deck buildNewDeck() {
 
         List<Card> newConDeck = new ArrayList<>();
         List<Card> newVowDeck = new ArrayList<>();
 
-        // 자음카드 생성
-        for (Consonant c : Consonant.values()) {
-            for (int i = 0; i < copiesPerCard; i++) {
-                newConDeck.add(new Card(CardType.CONSONANT, c.name()));
-            }
-        }
 
-        // 모음카드 생성
-        for (Vowel v : Vowel.values()) {
-            for (int i = 0; i < copiesPerCard; i++) {
-                newVowDeck.add(new Card(CardType.VOWEL, v.name()));
+        for (CardPoint cp : CardPoint.values()) {
+
+            // 자음카드 생성
+            for (Consonant c : Consonant.values()) {
+                for (int i = 0; i < cp.getCardCopyCount(); i++) {
+                    newConDeck.add(new Card(CardType.CONSONANT, c.getCode(), cp));
+                }
+            }
+
+            // 모음카드 생성
+            for (Vowel v : Vowel.values()) {
+                for (int i = 0; i < cp.getCardCopyCount(); i++) {
+                    newConDeck.add(new Card(CardType.VOWEL, v.getCode(), cp));
+                }
             }
         }
 

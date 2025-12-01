@@ -85,14 +85,16 @@ public class GameResponse {
 
         private CardType cardType;
         private String value;
+        private int point;
 
-        public CardApiDto(CardType cardType, String value) {
+        public CardApiDto(CardType cardType, String value, int point) {
             this.cardType = cardType;
             this.value = value;
+            this.point = point;
         }
 
         public static CardApiDto fromCard(Card card) {
-            return new CardApiDto(card.getCardType(), card.getValue());
+            return new CardApiDto(card.getCardType(), card.getValue(), card.getPoint().getPoint());
         }
     }
 }
