@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.storeishangul.sgulserver.domain.gameplay.domain.support.CardType;
 
+@Slf4j
 @Getter
 public class Hand {
 
@@ -50,6 +52,21 @@ public class Hand {
     public List<Card> getCards() {
 
         return Stream.of(vowelCards, consonantCards).flatMap(List::stream).toList();
+    }
+
+    public void discard(List<Card> cards) {
+
+        cards.forEach(c -> {
+            try {
+                if (c.getCardType() == CardType.VOWEL) {
+                    this.vowelCards.remove(c);
+                } else {
+                    this.consonantCards.remove(c);
+                }
+            } catch (Exception e) {
+                log.error("Error while discarding card from hand: {}", c);
+            }
+        });
     }
 }
 

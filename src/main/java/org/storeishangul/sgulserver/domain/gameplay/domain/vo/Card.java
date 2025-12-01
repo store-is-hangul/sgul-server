@@ -1,5 +1,6 @@
 package org.storeishangul.sgulserver.domain.gameplay.domain.vo;
 
+import java.util.Objects;
 import lombok.Getter;
 import org.storeishangul.sgulserver.domain.gameplay.domain.support.CardPoint;
 import org.storeishangul.sgulserver.domain.gameplay.domain.support.CardType;
@@ -15,5 +16,20 @@ public class Card {
         this.cardType = cardType;
         this.value = value;
         this.point = point;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Card card = (Card) o;
+        return cardType == card.cardType && Objects.equals(value, card.value)
+            && point == card.point;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cardType, value, point);
     }
 }
