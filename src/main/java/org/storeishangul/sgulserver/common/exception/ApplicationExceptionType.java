@@ -9,6 +9,7 @@ public enum ApplicationExceptionType {
 
     // 1000: GAME SESSION
     GAME_SESSION_NOT_FOUND_EXCEPTION(1000, "Game Session Not Found"),
+    MAX_CARD_IN_HAND_EXCEPTION(1001, "Max Card In Hand"),
     ;
 
     private final int code;
