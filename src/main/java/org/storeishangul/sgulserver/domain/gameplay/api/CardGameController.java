@@ -55,7 +55,7 @@ public class CardGameController {
     }
 
     @MessageMapping("/game/point")
-    public void calculatePoints(Principal principal, SimpMessageHeaderAccessor accessor, CalculatePointRequest request) {
+    public void calculatePoints(Principal principal, SimpMessageHeaderAccessor accessor) {
 
         String userId = principal.getName();
 
@@ -64,8 +64,7 @@ public class CardGameController {
             "/queue/point",
             gamePlayApplicationService.calculatePoint(
                 userId,
-                accessor.getSessionId(),
-                request
+                accessor.getSessionId()
             )
         );
     }

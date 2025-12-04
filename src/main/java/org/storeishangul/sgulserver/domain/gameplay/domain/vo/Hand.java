@@ -11,8 +11,8 @@ import org.storeishangul.sgulserver.domain.gameplay.domain.support.CardType;
 @Getter
 public class Hand {
 
-    List<Card> vowelCards;
-    List<Card> consonantCards;
+    private List<Card> vowelCards;
+    private List<Card> consonantCards;
 
     private final static int MINIMUM_CARD_COUNT_EACH = 3;
 

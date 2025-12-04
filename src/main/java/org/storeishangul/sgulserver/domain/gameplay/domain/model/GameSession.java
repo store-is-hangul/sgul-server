@@ -6,6 +6,7 @@ import lombok.Getter;
 import org.storeishangul.sgulserver.domain.gameplay.domain.support.CardType;
 import org.storeishangul.sgulserver.domain.gameplay.domain.vo.Card;
 import org.storeishangul.sgulserver.domain.gameplay.domain.vo.Deck;
+import org.storeishangul.sgulserver.domain.gameplay.domain.vo.Desk;
 import org.storeishangul.sgulserver.domain.gameplay.domain.vo.Hand;
 
 @Getter
@@ -13,6 +14,7 @@ public class GameSession {
 
     private final String userId;
     private String sessionId;
+    private final Desk desk;
     private final Deck deck;
     private final Hand hand;
     private int totalScore;
@@ -20,9 +22,10 @@ public class GameSession {
 
     private static final int INITIAL_DRAW_COUNT_EACH = 6;
 
-    private GameSession(String userId, String sessionId, Deck deck, Hand hand, int totalScore) {
+    private GameSession(String userId, String sessionId, Desk desk, Deck deck, Hand hand, int totalScore) {
         this.userId = userId;
         this.sessionId = sessionId;
+        this.desk = desk;
         this.deck = deck;
         this.hand = hand;
         this.totalScore = totalScore;
@@ -34,6 +37,7 @@ public class GameSession {
         return new GameSession(
             userId,
             sessionId,
+            Desk.empty(),
             Deck.buildNewDeck(),
             Hand.empty(),
             0
@@ -87,5 +91,10 @@ public class GameSession {
     public void discardCardsFromHand(List<Card> cards) {
 
         this.hand.discard(cards);
+    }
+
+    public void clearDesk() {
+
+        this.desk.clear();
     }
 }

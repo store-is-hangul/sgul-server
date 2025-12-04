@@ -83,18 +83,22 @@ public class GameResponse {
     @Getter
     public static class CardApiDto {
 
+        private String id;
         private CardType cardType;
         private String value;
         private int point;
 
-        public CardApiDto(CardType cardType, String value, int point) {
+        public CardApiDto(String id, CardType cardType, String value, int point) {
+
+            this.id = id;
             this.cardType = cardType;
             this.value = value;
             this.point = point;
         }
 
         public static CardApiDto fromCard(Card card) {
-            return new CardApiDto(card.getCardType(), card.getValue(), card.getPoint().getPoint());
+
+            return new CardApiDto(card.getId(), card.getCardType(), card.getValue(), card.getPoint().getPoint());
         }
     }
 }

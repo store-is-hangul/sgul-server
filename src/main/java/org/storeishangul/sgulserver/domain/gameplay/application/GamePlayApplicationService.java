@@ -32,13 +32,13 @@ public class GamePlayApplicationService {
         return GameResponse.from(gameSession);
     }
 
-    public CalculatePointsResponse calculatePoint(String userId, String sessionId,
-        CalculatePointRequest request) {
+    public CalculatePointsResponse calculatePoint(String userId, String sessionId) {
 
         GameSession gameSession = gameSessionService.findSessionByUserIdOrElseThrow(userId, sessionId);
-        String assembledWord = dictionaryService.makeWordAndValidate(request.getCards());
-        gameSession.calculatePoints(request.getCards(), assembledWord);
-        gameSession.discardCardsFromHand(request.getCards());
+        String assembledWord = dictionaryService.makeWordAndValidate(gameSession.getDesk().getCards());
+        gameSession.calculatePoints(gameSession.getDesk().getCards(), assembledWord);
+//        gameSession.discardCardsFromHand(request.getCards());
+        gameSession.clearDesk();
 
         return CalculatePointsResponse.of(gameSession, assembledWord);
     }
