@@ -1,5 +1,6 @@
 package org.storeishangul.sgulserver.common.config;
 
+import io.micrometer.common.util.StringUtils;
 import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.util.List;
@@ -36,8 +37,8 @@ public class WebSocketAuthConfig implements ChannelInterceptor {
             payload = new String((byte[]) message.getPayload(), StandardCharsets.UTF_8);
         }
 
-        log.info("STOMP HEADER: {}", message.getHeaders());
-        log.info("STOMP PAYLOAD: {} [{}] INBOUND payload: {}", accessor.getCommand(), accessor.getSessionId(), payload);
+        //log.info("STOMP HEADER: {}", message.getHeaders());
+        log.info(">>>>> STOMP INBOUND PAYLOAD: [{}] sessionId: {}, payload: {}", accessor.getCommand(), accessor.getSessionId(), StringUtils.isBlank(payload) ? "NONE" : payload);
 
         if (StompCommand.CONNECT.equals(accessor.getCommand())) {
             String userId = accessor.getFirstNativeHeader("userId");
@@ -45,7 +46,7 @@ public class WebSocketAuthConfig implements ChannelInterceptor {
                 new UsernamePasswordAuthenticationToken(userId, null, List.of());
 
             accessor.setUser(auth);
-            log.info("STOMP CONNECTED: {}", userId);
+            log.info(">>>>> STOMP CONNECTED: {}", userId);
         }
 
         return message;
