@@ -18,10 +18,17 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private final WebSocketExceptionHandler webSocketExceptionHandler;
     private final WebSocketAuthConfig webSocketAuthConfig;
+    private final WebSocketLoggingInterceptorConfig stompLoggingInterceptor;
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
         registration.interceptors(webSocketAuthConfig);
+    }
+
+    @Override
+    public void configureClientOutboundChannel(ChannelRegistration registration) {
+        // 나가는 메시지 로깅
+        registration.interceptors(stompLoggingInterceptor);
     }
 
     @Override
