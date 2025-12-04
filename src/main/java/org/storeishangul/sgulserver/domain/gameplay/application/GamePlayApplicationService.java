@@ -3,7 +3,6 @@ package org.storeishangul.sgulserver.domain.gameplay.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.storeishangul.sgulserver.domain.dictionary.domain.DictionaryService;
-import org.storeishangul.sgulserver.domain.gameplay.api.dto.request.CalculatePointRequest;
 import org.storeishangul.sgulserver.domain.gameplay.api.dto.request.DrawRequest;
 import org.storeishangul.sgulserver.domain.gameplay.api.dto.request.OnDeskRequest;
 import org.storeishangul.sgulserver.domain.gameplay.api.dto.request.OnDeskRequest.JobsOnDeskType;
@@ -40,11 +39,14 @@ public class GamePlayApplicationService {
 
         GameSession gameSession = gameSessionService.findSessionByUserIdOrElseThrow(userId, sessionId);
         String assembledWord = dictionaryService.makeWordAndValidate(gameSession.getDesk().getCards());
-        gameSession.calculatePoints(gameSession.getDesk().getCards(), assembledWord);
+        int points = gameSession.calculatePoints(gameSession.getDesk().getCards(), assembledWord);
+        gameSession.addPoints(points);
+        String mathematicalExpression = gameSession.generateMathematicalExpression(gameSession.getDesk().getCards(), assembledWord);
         gameSession.clearDesk();
+
         gameSessionService.saveSession(gameSession);
 
-        return CalculatePointsResponse.of(gameSession, assembledWord);
+        return CalculatePointsResponse.of(gameSession, assembledWord, mathematicalExpression);
     }
 
     public GameResponse processJobsOnDesk(String userId, String sessionId, OnDeskRequest request) {

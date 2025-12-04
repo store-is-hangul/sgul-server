@@ -2,6 +2,7 @@ package org.storeishangul.sgulserver.domain.gameplay.domain.model;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import org.storeishangul.sgulserver.domain.gameplay.domain.support.CardType;
 import org.storeishangul.sgulserver.domain.gameplay.domain.vo.Card;
@@ -82,10 +83,32 @@ public class GameSession {
         }
     }
 
-    public void calculatePoints(List<Card> cards, String assembledWord) {
+    public void addPoints(int points) {
+
+        this.totalScore += points;
+    }
+
+    public int calculatePoints(List<Card> cards, String assembledWord) {
 
         int sum = cards.stream().mapToInt(c -> c.getPoint().getPoint()).sum();
-        this.totalScore += sum * assembledWord.length();
+        return sum * assembledWord.length();
+    }
+
+    public String generateMathematicalExpression(List<Card> cards, String assembledWord) {
+
+        String pointsExpression = cards.stream()
+            .map(card -> String.valueOf(card.getPoint().getPoint()))
+            .collect(Collectors.joining(" + ", "(", ")"));
+
+        int sumOfPoint = cards.stream()
+            .mapToInt(card -> card.getPoint().getPoint())
+            .sum();
+
+        int length = assembledWord.length();
+
+        int totalScore = sumOfPoint * length;
+
+        return String.format("%s * %d = %d", pointsExpression, length, totalScore);
     }
 
     public void discardCardsFromHand(List<Card> cards) {

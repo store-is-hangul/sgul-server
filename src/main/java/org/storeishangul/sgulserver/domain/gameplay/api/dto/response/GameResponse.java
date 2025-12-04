@@ -7,6 +7,7 @@ import org.storeishangul.sgulserver.domain.gameplay.domain.model.GameSession;
 import org.storeishangul.sgulserver.domain.gameplay.domain.support.CardType;
 import org.storeishangul.sgulserver.domain.gameplay.domain.vo.Card;
 import org.storeishangul.sgulserver.domain.gameplay.domain.vo.Deck;
+import org.storeishangul.sgulserver.domain.gameplay.domain.vo.Desk;
 import org.storeishangul.sgulserver.domain.gameplay.domain.vo.Hand;
 
 @Getter
@@ -14,15 +15,17 @@ public class GameResponse {
 
     private String userId;
     private String sessionId;
+    private DeskApiDto desk;
     private int deckCardsCount;
     private HandApiDto hand;
     private int totalScore;
     private LocalDateTime lastModifiedAt;
 
-    public GameResponse(String userId, String sessionId, int deckCardsCount, HandApiDto hand, int totalScore,
+    public GameResponse(String userId, String sessionId, DeskApiDto desk, int deckCardsCount, HandApiDto hand, int totalScore,
         LocalDateTime lastModifiedAt) {
         this.userId = userId;
         this.sessionId = sessionId;
+        this.desk = desk;
         this.deckCardsCount = deckCardsCount;
         this.hand = hand;
         this.totalScore = totalScore;
@@ -38,6 +41,7 @@ public class GameResponse {
         return new GameResponse(
             gameSession.getUserId(),
             gameSession.getSessionId(),
+            DeskApiDto.fromDesk(gameSession.getDesk()),
             gameSession.getDeck() == null ? 0 : gameSession.getDeck().getCardsCount(),
             HandApiDto.fromHand(gameSession.getHand()),
             gameSession.getTotalScore(),
@@ -76,7 +80,32 @@ public class GameResponse {
 
         public static HandApiDto fromHand(Hand hand) {
 
+            if(hand == null) {
+
+                return null;
+            }
+
             return new HandApiDto(hand.getCards().stream().map(CardApiDto::fromCard).toList());
+        }
+    }
+
+    @Getter
+    public static class DeskApiDto {
+
+        private List<CardApiDto> cards;
+
+        public DeskApiDto(List<CardApiDto> cards) {
+            this.cards = cards;
+        }
+
+        public static DeskApiDto fromDesk(Desk desk) {
+
+            if(desk == null) {
+
+                return null;
+            }
+
+            return new DeskApiDto(desk.getCards().stream().map(CardApiDto::fromCard).toList());
         }
     }
 
