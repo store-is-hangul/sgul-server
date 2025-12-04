@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.storeishangul.sgulserver.domain.dictionary.domain.DictionaryService;
 import org.storeishangul.sgulserver.domain.gameplay.api.dto.request.CalculatePointRequest;
 import org.storeishangul.sgulserver.domain.gameplay.api.dto.request.DrawRequest;
+import org.storeishangul.sgulserver.domain.gameplay.api.dto.request.OnDeskRequest;
+import org.storeishangul.sgulserver.domain.gameplay.api.dto.request.OnDeskRequest.JobsOnDeskType;
 import org.storeishangul.sgulserver.domain.gameplay.api.dto.response.CalculatePointsResponse;
 import org.storeishangul.sgulserver.domain.gameplay.api.dto.response.GameResponse;
 import org.storeishangul.sgulserver.domain.gameplay.domain.GameSessionService;
@@ -20,6 +22,7 @@ public class GamePlayApplicationService {
     public GameResponse startGame(String userId, String sessionId) {
 
         GameSession gameSession = gameSessionService.startNewGameSession(userId, sessionId);
+        gameSessionService.saveSession(gameSession);
 
         return GameResponse.from(gameSession);
     }
@@ -28,6 +31,7 @@ public class GamePlayApplicationService {
 
         GameSession gameSession = gameSessionService.findSessionByUserIdOrElseThrow(userId, sessionId);
         gameSession.drawCards(request.getCounts());
+        gameSessionService.saveSession(gameSession);
 
         return GameResponse.from(gameSession);
     }
@@ -37,9 +41,25 @@ public class GamePlayApplicationService {
         GameSession gameSession = gameSessionService.findSessionByUserIdOrElseThrow(userId, sessionId);
         String assembledWord = dictionaryService.makeWordAndValidate(gameSession.getDesk().getCards());
         gameSession.calculatePoints(gameSession.getDesk().getCards(), assembledWord);
-//        gameSession.discardCardsFromHand(request.getCards());
         gameSession.clearDesk();
+        gameSessionService.saveSession(gameSession);
 
         return CalculatePointsResponse.of(gameSession, assembledWord);
+    }
+
+    public GameResponse processJobsOnDesk(String userId, String sessionId, OnDeskRequest request) {
+
+        GameSession gameSession = gameSessionService.findSessionByUserIdOrElseThrow(userId,
+            sessionId);
+
+        if (JobsOnDeskType.PUT == request.getType()) {
+            gameSession.putCardOnDesk(request.getCardId());
+        } else {
+            gameSession.removeCardFromDesk(request.getCardId());
+        }
+
+        gameSessionService.saveSession(gameSession);
+
+        return GameResponse.from(gameSession);
     }
 }

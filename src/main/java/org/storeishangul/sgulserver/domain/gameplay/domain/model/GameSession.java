@@ -97,4 +97,16 @@ public class GameSession {
 
         this.desk.clear();
     }
+
+    public void putCardOnDesk(String cardId) {
+
+        Card targetCard = this.hand.remove(cardId);
+        this.desk.putCard(targetCard);
+    }
+
+    public void removeCardFromDesk(String cardId) {
+
+        Card targetCard = this.desk.remove(cardId);
+        this.hand.putNewCard(targetCard);
+    }
 }

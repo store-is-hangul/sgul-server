@@ -14,8 +14,10 @@ public class Card {
     private final String value;
     private final CardPoint point;
 
+    private static final String CARD_ID_FORMAT = "%s_%s";
+
     public Card(CardType cardType, String value, CardPoint point) {
-        this.id = UUID.randomUUID().toString();
+        this.id = String.format(CARD_ID_FORMAT, cardType.name(), UUID.randomUUID());
         this.cardType = cardType;
         this.value = value;
         this.point = point;
@@ -27,12 +29,12 @@ public class Card {
             return false;
         }
         Card card = (Card) o;
-        return cardType == card.cardType && Objects.equals(value, card.value)
+        return Objects.equals(id, card.id) && cardType == card.cardType && Objects.equals(value, card.value)
             && point == card.point;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cardType, value, point);
+        return Objects.hash(id, cardType, value, point);
     }
 }

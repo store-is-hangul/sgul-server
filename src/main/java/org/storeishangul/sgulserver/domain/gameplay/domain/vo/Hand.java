@@ -1,7 +1,9 @@
 package org.storeishangul.sgulserver.domain.gameplay.domain.vo;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -67,6 +69,27 @@ public class Hand {
                 log.error("Error while discarding card from hand: {}", c);
             }
         });
+    }
+
+    public Card remove(String cardId) {
+        List<Card> targetList = cardId.startsWith(CardType.VOWEL.name())
+            ? this.vowelCards
+            : this.consonantCards;
+
+        return findAndRemove(targetList, cardId);
+    }
+
+    private Card findAndRemove(List<Card> cards, String cardId) {
+        Iterator<Card> iterator = cards.iterator();
+        while (iterator.hasNext()) {
+            Card card = iterator.next();
+            if (card.getId().equals(cardId)) {
+                iterator.remove();
+                return card;
+            }
+        }
+
+        return null;
     }
 }
 
