@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
+import org.storeishangul.sgulserver.domain.gameplay.domain.exception.MaxCardInHandException;
 import org.storeishangul.sgulserver.domain.gameplay.domain.support.CardType;
 import org.storeishangul.sgulserver.domain.gameplay.domain.vo.Card;
 import org.storeishangul.sgulserver.domain.gameplay.domain.vo.Deck;
@@ -69,7 +70,7 @@ public class GameSession {
 
         if (getHandAndDeskCardCount() >= MAX_HAND_CARD_COUNT) {
 
-            return;
+            throw new MaxCardInHandException();
         }
 
         while (count > 0) {
