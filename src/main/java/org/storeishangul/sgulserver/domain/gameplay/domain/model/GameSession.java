@@ -22,6 +22,7 @@ public class GameSession {
     private LocalDateTime lastModifiedAt;
 
     private static final int INITIAL_DRAW_COUNT_EACH = 6;
+    private static final int MAX_HAND_CARD_COUNT = 12;
 
     private GameSession(String userId, String sessionId, Desk desk, Deck deck, Hand hand, int totalScore) {
         this.userId = userId;
@@ -65,6 +66,11 @@ public class GameSession {
     }
 
     public void drawCards(int count) {
+
+        if (getHandAndDeskCardCount() >= MAX_HAND_CARD_COUNT) {
+
+            return;
+        }
 
         while (count > 0) {
 
@@ -131,5 +137,10 @@ public class GameSession {
 
         Card targetCard = this.desk.remove(cardId);
         this.hand.putNewCard(targetCard);
+    }
+
+    public int getHandAndDeskCardCount() {
+
+        return this.hand.getCards().size() + this.desk.getCards().size();
     }
 }
