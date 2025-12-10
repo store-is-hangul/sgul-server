@@ -48,7 +48,8 @@ public class Deck {
         }
 
         if(CardType.VOWEL == type) {
-            System.out.println("\n Vowel Deck is Empty? : "  + !(vowelDeck != null && !vowelDeck.isEmpty()) + "\n");
+            System.out.println("\n Vowel Deck null? : "  + (vowelDeck == null)  + "\n");
+            System.out.println("\n Vowel Deck is Empty? : "  + (vowelDeck != null && vowelDeck.isEmpty()) + "\n");
             if ((vowelDeck != null && !vowelDeck.isEmpty())) {
                 Card card = vowelDeck.removeFirst();
                 System.out.println("\n return card : " + card + "\n");
