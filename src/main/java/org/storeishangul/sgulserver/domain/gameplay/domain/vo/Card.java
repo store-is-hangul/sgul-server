@@ -37,4 +37,14 @@ public class Card {
     public int hashCode() {
         return Objects.hash(id, cardType, value, point);
     }
+
+    @Override
+    public String toString() {
+        return "Card{" +
+            "id='" + id + '\'' +
+            ", cardType=" + cardType +
+            ", value='" + value + '\'' +
+            ", point=" + point +
+            '}';
+    }
 }
