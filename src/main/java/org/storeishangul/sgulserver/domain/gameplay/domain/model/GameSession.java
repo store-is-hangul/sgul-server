@@ -20,18 +20,20 @@ public class GameSession {
     private final Deck deck;
     private final Hand hand;
     private int totalScore;
+    private boolean isActive;
     private LocalDateTime lastModifiedAt;
 
     private static final int INITIAL_DRAW_COUNT_EACH = 6;
     private static final int MAX_HAND_CARD_COUNT = 12;
 
-    private GameSession(String userId, String sessionId, Desk desk, Deck deck, Hand hand, int totalScore) {
+    private GameSession(String userId, String sessionId, Desk desk, Deck deck, Hand hand, int totalScore, boolean isActive) {
         this.userId = userId;
         this.sessionId = sessionId;
         this.desk = desk;
         this.deck = deck;
         this.hand = hand;
         this.totalScore = totalScore;
+        this.isActive = isActive;
         this.lastModifiedAt = LocalDateTime.now();
     }
 
@@ -43,7 +45,8 @@ public class GameSession {
             Desk.empty(),
             Deck.buildNewDeck(),
             Hand.empty(),
-            0
+            0,
+            true
         );
     }
 
@@ -143,5 +146,10 @@ public class GameSession {
     public int getHandAndDeskCardCount() {
 
         return this.hand.getCards().size() + this.desk.getCards().size();
+    }
+
+    public void closeSession() {
+
+        this.isActive = false;
     }
 }

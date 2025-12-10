@@ -1,6 +1,5 @@
 package org.storeishangul.sgulserver.domain.gameplay.domain;
 
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.storeishangul.sgulserver.domain.gameplay.domain.exception.GameSessionNotFoundException;
@@ -24,7 +23,7 @@ public class GameSessionService {
 
     public GameSession initializeOrRestoreSession(String userId, String sessionId) {
 
-        GameSession gameSession = gameSessionRepository.findByUserId(userId);
+        GameSession gameSession = gameSessionRepository.findActivatingByUserId(userId);
 
         if(gameSession == null) {
             return startNewGameSession(userId, sessionId);
@@ -37,7 +36,7 @@ public class GameSessionService {
 
     public GameSession findSessionByUserIdOrElseThrow(String userId, String sessionId) {
 
-        GameSession gameSession = gameSessionRepository.findByUserId(userId);
+        GameSession gameSession = gameSessionRepository.findActivatingByUserId(userId);
 
         if(gameSession == null) {
             throw new GameSessionNotFoundException();

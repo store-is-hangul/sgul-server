@@ -6,7 +6,7 @@ import org.storeishangul.sgulserver.domain.gameplay.domain.model.GameSession;
 public interface GameSessionRepository {
 
     @Nullable
-    GameSession findByUserId(String userId);
+    GameSession findActivatingByUserId(String userId);
 
     GameSession save(GameSession gameSession);
 
