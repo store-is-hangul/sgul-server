@@ -64,4 +64,15 @@ public class GamePlayApplicationService {
 
         return GameResponse.from(gameSession);
     }
+
+    public GameResponse finishTheGame(String userId, String sessionId) {
+
+        GameSession gameSession = gameSessionService.findSessionByUserIdOrElseThrow(userId,
+            sessionId);
+
+        gameSession.closeSession();
+        gameSessionService.saveSession(gameSession);
+
+        return GameResponse.from(gameSession);
+    }
 }

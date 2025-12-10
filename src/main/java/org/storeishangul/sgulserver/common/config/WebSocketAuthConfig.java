@@ -38,7 +38,13 @@ public class WebSocketAuthConfig implements ChannelInterceptor {
         }
 
         //log.info("STOMP HEADER: {}", message.getHeaders());
-        log.info(">>>>> STOMP INBOUND PAYLOAD: [{}] sessionId: {}, payload: {}", accessor.getCommand(), accessor.getSessionId(), StringUtils.isBlank(payload) ? "NONE" : payload);
+        log.info(
+            ">>>>> STOMP INBOUND PAYLOAD: [{}] sessionId: {}, dest: {}, payload: {}",
+            accessor.getCommand(),
+            accessor.getSessionId(),
+            accessor.getDestination(),
+            StringUtils.isBlank(payload) ? "NONE" : payload
+        );
 
         if (StompCommand.CONNECT.equals(accessor.getCommand())) {
             String userId = accessor.getFirstNativeHeader("userId");

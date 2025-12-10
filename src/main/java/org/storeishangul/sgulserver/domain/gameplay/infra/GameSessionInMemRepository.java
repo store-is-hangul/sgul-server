@@ -2,6 +2,7 @@ package org.storeishangul.sgulserver.domain.gameplay.infra;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import org.springframework.stereotype.Repository;
 import org.storeishangul.sgulserver.domain.gameplay.domain.model.GameSession;
 
@@ -16,9 +17,15 @@ public class GameSessionInMemRepository implements GameSessionRepository{
     }
 
     @Override
-    public GameSession findByUserId(String userId) {
+    public GameSession findActivatingByUserId(String userId) {
 
-        return gameSessions.get(userId);
+        Optional<GameSession> gameSessionOptional = Optional.ofNullable(gameSessions.get(userId));
+
+        if (gameSessionOptional.isPresent() && gameSessionOptional.get().isActive()) {
+            return gameSessionOptional.get();
+        } else {
+            return null;
+        }
     }
 
     @Override

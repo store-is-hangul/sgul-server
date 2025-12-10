@@ -85,4 +85,19 @@ public class CardGameController {
             )
         );
     }
+
+    @MessageMapping("/game/over")
+    public void finishTheGame(Principal principal, SimpMessageHeaderAccessor accessor) {
+
+        String userId = principal.getName();
+
+        messagingTemplate.convertAndSendToUser(
+            userId,
+            "/queue/over",
+            gamePlayApplicationService.finishTheGame(
+                userId,
+                accessor.getSessionId()
+            )
+        );
+    }
 }
