@@ -87,7 +87,7 @@ public class Deck {
             // 모음카드 생성
             for (Vowel v : Vowel.values()) {
                 for (int i = 0; i < cp.getCardCopyCount(); i++) {
-                    newConDeck.add(new Card(CardType.VOWEL, v.getCode(), cp));
+                    newVowDeck.add(new Card(CardType.VOWEL, v.getCode(), cp));
                 }
             }
         }
