@@ -134,12 +134,22 @@ public class GameSession {
     public void putCardOnDesk(String cardId) {
 
         Card targetCard = this.hand.remove(cardId);
+
+        if (targetCard == null) {
+            return;
+        }
+
         this.desk.putCard(targetCard);
     }
 
     public void removeCardFromDesk(String cardId) {
 
         Card targetCard = this.desk.remove(cardId);
+
+        if (targetCard == null) {
+            return;
+        }
+
         this.hand.putNewCard(targetCard);
     }
 

@@ -1,5 +1,6 @@
 package org.storeishangul.sgulserver.domain.gameplay.domain.vo;
 
+import jakarta.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -71,6 +72,7 @@ public class Hand {
         });
     }
 
+    @Nullable
     public Card remove(String cardId) {
         List<Card> targetList = cardId.startsWith(CardType.VOWEL.name())
             ? this.vowelCards
@@ -79,6 +81,7 @@ public class Hand {
         return findAndRemove(targetList, cardId);
     }
 
+    @Nullable
     private Card findAndRemove(List<Card> cards, String cardId) {
         Iterator<Card> iterator = cards.iterator();
         while (iterator.hasNext()) {
