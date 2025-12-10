@@ -42,13 +42,29 @@ public class Deck {
 
     @Nullable
     public Card singleDraw(CardType type) {
-        if(validateDeckEmpty())
+        if (validateDeckEmpty()) {
+            System.out.println("\n Deck is Empty!!! \n");
             return null;
+        }
 
         if(CardType.VOWEL == type) {
-            return (vowelDeck != null && !vowelDeck.isEmpty()) ? vowelDeck.removeFirst() : null;
+            System.out.println("\n Vowel Deck is Empty? : "  + !(vowelDeck != null && !vowelDeck.isEmpty()) + "\n");
+            if ((vowelDeck != null && !vowelDeck.isEmpty())) {
+                Card card = vowelDeck.removeFirst();
+                System.out.println("\n return card : " + card + "\n");
+                return card;
+            } else {
+                return null;
+            }
         } else {
-            return (consonantDeck != null && !consonantDeck.isEmpty()) ? consonantDeck.removeFirst() : null;
+            System.out.println("\n cons Deck is Empty? : "  + !(consonantDeck != null && !consonantDeck.isEmpty()) + "\n");
+            if ((consonantDeck != null && !consonantDeck.isEmpty())) {
+                Card card = consonantDeck.removeFirst();
+                System.out.println("\n return card : " + card + "\n");
+                return card;
+            } else {
+                return null;
+            }
         }
     }
 

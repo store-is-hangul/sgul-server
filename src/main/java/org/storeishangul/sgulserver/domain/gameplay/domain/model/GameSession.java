@@ -80,19 +80,19 @@ public class GameSession {
 
             System.out.println("count: " + count);
             if (!this.hand.hasMinimumVowel()) {
-                System.out.println("/n not hasMinimumVowel !!!/n");
+                System.out.println("\n not hasMinimumVowel !!!\n");
                 Card card = this.deck.singleDraw(CardType.VOWEL);
-                System.out.println("/n drawed card : " + card + "/n");
+                System.out.println("\n drawed card : " + card + "\n");
                 this.hand.putNewCard(card);
             } else if (!this.hand.hasMinimumConsonant()) {
-                System.out.println("/n not hasMinimumConsonant !!!/n");
+                System.out.println("\n not hasMinimumConsonant !!!\n");
                 Card card = this.deck.singleDraw(CardType.CONSONANT);
-                System.out.println("/n drawed card : " + card + "/n");
+                System.out.println("\n drawed card : " + card + "\n");
                 this.hand.putNewCard(card);
             } else {
                 Card card = this.deck.singleDraw();
-                System.out.println("/n random card draw !!!/n");
-                System.out.println("/n drawed card : " + card + "/n");
+                System.out.println("\n random card draw !!!\n");
+                System.out.println("\n drawed card : " + card + "\n");
                 this.hand.putNewCard(card);
             }
 
