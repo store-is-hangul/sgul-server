@@ -28,7 +28,7 @@ public class GamePlayApplicationService {
 
     public GameResponse drawCards(String userId, String sessionId, DrawRequest request) {
 
-        GameSession gameSession = gameSessionService.findSessionByUserIdOrElseThrow(userId, sessionId);
+        GameSession gameSession = gameSessionService.findSessionAndUpdateByUserIdOrElseThrow(userId, sessionId);
         gameSession.drawCards(request.getCounts());
         gameSessionService.saveSession(gameSession);
 
@@ -37,7 +37,7 @@ public class GamePlayApplicationService {
 
     public CalculatePointsResponse calculatePoint(String userId, String sessionId) {
 
-        GameSession gameSession = gameSessionService.findSessionByUserIdOrElseThrow(userId, sessionId);
+        GameSession gameSession = gameSessionService.findSessionAndUpdateByUserIdOrElseThrow(userId, sessionId);
         String assembledWord = dictionaryService.makeWordAndValidate(gameSession.getDesk().getCards());
         int points = gameSession.calculatePoints(gameSession.getDesk().getCards(), assembledWord);
         gameSession.addPoints(points);
@@ -51,7 +51,7 @@ public class GamePlayApplicationService {
 
     public GameResponse processJobsOnDesk(String userId, String sessionId, OnDeskRequest request) {
 
-        GameSession gameSession = gameSessionService.findSessionByUserIdOrElseThrow(userId,
+        GameSession gameSession = gameSessionService.findSessionAndUpdateByUserIdOrElseThrow(userId,
             sessionId);
 
         if (JobsOnDeskType.PUT == request.getType()) {
@@ -67,7 +67,7 @@ public class GamePlayApplicationService {
 
     public GameResponse finishTheGame(String userId, String sessionId) {
 
-        GameSession gameSession = gameSessionService.findSessionByUserIdOrElseThrow(userId,
+        GameSession gameSession = gameSessionService.findSessionAndUpdateByUserIdOrElseThrow(userId,
             sessionId);
 
         gameSession.closeSession();

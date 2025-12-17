@@ -34,7 +34,7 @@ public class GameSessionService {
         return gameSession;
     }
 
-    public GameSession findSessionByUserIdOrElseThrow(String userId, String sessionId) {
+    public GameSession findSessionAndUpdateByUserIdOrElseThrow(String userId, String sessionId) {
 
         GameSession gameSession = gameSessionRepository.findActivatingByUserId(userId);
 
@@ -45,6 +45,15 @@ public class GameSessionService {
         gameSession.updateSessionId(sessionId);
 
         return gameSession;
+    }
+
+    public void validateGameSessionExistByUserIdOrElseThrow(String userId) {
+
+        GameSession gameSession = gameSessionRepository.findActivatingByUserId(userId);
+
+        if(gameSession == null) {
+            throw new GameSessionNotFoundException();
+        }
     }
 
 
