@@ -20,10 +20,7 @@ import java.util.stream.Collectors;
 public class RestClientLoggingInterceptor implements ClientHttpRequestInterceptor {
 
     @Override
-    public ClientHttpResponse intercept(
-            HttpRequest request,
-            byte[] body,
-            ClientHttpRequestExecution execution) throws IOException {
+    public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
 
         long startTime = System.currentTimeMillis();
 
