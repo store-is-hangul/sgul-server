@@ -11,6 +11,12 @@ import java.util.List;
 @Configuration
 public class RestClientConfig {
 
+    private final RestClientLoggingInterceptor loggingInterceptor;
+
+    public RestClientConfig(RestClientLoggingInterceptor loggingInterceptor) {
+        this.loggingInterceptor = loggingInterceptor;
+    }
+
     @Bean(name = "dictionaryApi")
     public RestClient dictionaryApi(RestClient.Builder builder) {
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
@@ -25,6 +31,7 @@ public class RestClientConfig {
                 converters.clear();
                 converters.add(converter);
             })
+            .requestInterceptor(loggingInterceptor)
             .build();
     }
 }
