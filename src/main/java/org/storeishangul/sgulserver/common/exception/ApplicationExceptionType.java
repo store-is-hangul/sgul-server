@@ -13,9 +13,12 @@ public enum ApplicationExceptionType {
 
     // 2000: LEADERBOARD
     LEADERBOARD_ALREADY_EXIST_EXCEPTION(2000, "Leaderboard Already Exist"),
+
+
+    // 3000: WORD
+    WORD_NOT_FOUND_EXCEPTION(3000, "Word Not Found"),
+
     ;
-
-
     private final int code;
     private final String message;
 

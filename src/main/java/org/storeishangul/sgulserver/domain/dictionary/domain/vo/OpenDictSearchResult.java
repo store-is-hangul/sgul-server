@@ -9,10 +9,23 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class OpenDictSearchResult {
 
     private Channel channel;
+
+    public boolean validateEmpty() {
+
+        return channel == null || channel.item == null || channel.item.isEmpty();
+    }
+
+    public boolean contains(String word) {
+
+        if (validateEmpty() || word == null || word.isBlank()) {
+            return false;
+        }
+
+        return channel.item.stream().anyMatch(item -> item.word.equals(word));
+    }
 
     @Getter
     @NoArgsConstructor
@@ -25,6 +38,7 @@ public class OpenDictSearchResult {
         private int total;
         private int start;
         private int num;
+        private Long lastbuilddate;
 
         private List<Item> item;
     }
@@ -35,7 +49,7 @@ public class OpenDictSearchResult {
     public static class Item {
 
         private String word;
-        private Sense sense;
+        private List<Sense> sense;
     }
 
     @Getter
@@ -58,5 +72,4 @@ public class OpenDictSearchResult {
          */
         private String type;
     }
-
 }
