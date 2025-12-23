@@ -130,6 +130,12 @@ public class GameSession {
         this.desk.clear();
     }
 
+    public void moveAllCardsFromDeskToHand() {
+
+        this.desk.getCards().forEach(this.hand::putNewCard);
+        this.desk.clear();
+    }
+
     public void putCardOnDesk(String cardId) {
 
         Card targetCard = this.hand.remove(cardId);

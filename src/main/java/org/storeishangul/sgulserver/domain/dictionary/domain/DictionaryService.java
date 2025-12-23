@@ -1,10 +1,9 @@
 package org.storeishangul.sgulserver.domain.dictionary.domain;
 
-import java.util.HashSet;
+import jakarta.annotation.Nullable;
+import java.util.HashMap;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.storeishangul.sgulserver.domain.dictionary.domain.exception.WordNotFoundException;
 import org.storeishangul.sgulserver.domain.dictionary.domain.vo.OpenDictSearchResult;
 import org.storeishangul.sgulserver.domain.dictionary.infra.WordRepository;
 import org.storeishangul.sgulserver.domain.dictionary.support.HangulComposer;
@@ -17,33 +16,42 @@ import org.storeishangul.sgulserver.domain.gameplay.domain.vo.Card;
 public class DictionaryService {
 
     private final WordRepository wordRepository;
-    private final HashSet<String> wordCache;
+    private final HashMap<String, Boolean> wordCache;
 
 
     public DictionaryService(WordRepository wordRepository) {
         this.wordRepository = wordRepository;
-        this.wordCache = new HashSet<>();
+        this.wordCache = new HashMap<>();
     }
 
-    public String makeWordAndValidate(List<Card> cards) {
+    @Nullable
+    public String makeWordAndValidateOrElseNull(List<Card> cards) {
 
         List<Character> characters = cards.stream()
             .map(c -> findByTypeAndCode(c.getCardType(), c.getValue())).toList();
 
         String composedString = HangulComposer.compose(characters);
 
-        if (wordCache.contains(composedString)) {
+        // 단어 조합조차 되지 않는 경우
+        if (composedString == null || composedString.isEmpty()) {
 
-            return composedString;
+            return null;
+        }
+
+        if (wordCache.containsKey(composedString)) {
+
+            return wordCache.get(composedString) ? composedString : null;
         }
 
         OpenDictSearchResult searchedResult = wordRepository.search(composedString);
 
         if (!searchedResult.contains(composedString)) {
 
-            throw new WordNotFoundException();
+            wordCache.put(composedString, false);
+            return null;
         }
 
+        wordCache.put(composedString, true);
         return composedString;
     }
 

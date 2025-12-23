@@ -28,7 +28,8 @@ public class GamePlayApplicationService {
 
     public GameResponse drawCards(String userId, String sessionId, DrawRequest request) {
 
-        GameSession gameSession = gameSessionService.findSessionAndUpdateByUserIdOrElseThrow(userId, sessionId);
+        GameSession gameSession = gameSessionService.findSessionAndUpdateByUserIdOrElseThrow(userId,
+            sessionId);
         gameSession.drawCards(request.getCounts());
         gameSessionService.saveSession(gameSession);
 
@@ -38,10 +39,20 @@ public class GamePlayApplicationService {
     public CalculatePointsResponse calculatePoint(String userId, String sessionId) {
 
         GameSession gameSession = gameSessionService.findSessionAndUpdateByUserIdOrElseThrow(userId, sessionId);
-        String assembledWord = dictionaryService.makeWordAndValidate(gameSession.getDesk().getCards());
+        String assembledWord = dictionaryService.makeWordAndValidateOrElseNull(gameSession.getDesk().getCards());
+
+        if (assembledWord == null) {
+
+            gameSession.moveAllCardsFromDeskToHand();
+            gameSessionService.saveSession(gameSession);
+
+            return CalculatePointsResponse.fail(gameSession);
+        }
+
         int points = gameSession.calculatePoints(gameSession.getDesk().getCards(), assembledWord);
         gameSession.addPoints(points);
-        String mathematicalExpression = gameSession.generateMathematicalExpression(gameSession.getDesk().getCards(), assembledWord);
+        String mathematicalExpression = gameSession.generateMathematicalExpression(
+            gameSession.getDesk().getCards(), assembledWord);
         gameSession.clearDesk();
 
         gameSessionService.saveSession(gameSession);

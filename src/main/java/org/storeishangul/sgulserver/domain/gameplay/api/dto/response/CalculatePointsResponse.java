@@ -32,4 +32,19 @@ public class CalculatePointsResponse extends GameResponse{
             mathematicalExpression
         );
     }
+
+    public static CalculatePointsResponse fail(GameSession gameSession) {
+
+        return new CalculatePointsResponse(
+            gameSession.getUserId(),
+            gameSession.getSessionId(),
+            DeskApiDto.fromDesk(gameSession.getDesk()),
+            gameSession.getDeck() == null ? 0 : gameSession.getDeck().getCardsCount(),
+            HandApiDto.fromHand(gameSession.getHand()),
+            gameSession.getTotalScore(),
+            gameSession.getLastModifiedAt(),
+            false,
+            null
+        );
+    }
 }
