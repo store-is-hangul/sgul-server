@@ -1,5 +1,6 @@
 package org.storeishangul.sgulserver.domain.gameplay.infra;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -48,5 +49,11 @@ public class GameSessionInMemRepository implements GameSessionRepository{
     public void deleteByUserId(String userId) {
 
         gameSessions.remove(userId);
+    }
+
+    @Override
+    public void deleteActivatingAfter(LocalDateTime from) {
+
+        gameSessions.entrySet().removeIf(entry -> entry.getValue().validateOverdue(from));
     }
 }

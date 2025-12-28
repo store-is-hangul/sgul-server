@@ -25,6 +25,7 @@ public class GameSession {
 
     private static final int INITIAL_DRAW_COUNT_EACH = 3;
     private static final int MAX_HAND_CARD_COUNT = 12;
+    private static final int OVERDUE_HOUR = 1;
 
     private GameSession(String userId, String sessionId, Desk desk, Deck deck, Hand hand, int totalScore, boolean isActive) {
         this.userId = userId;
@@ -166,5 +167,10 @@ public class GameSession {
     public void closeSession() {
 
         this.isActive = false;
+    }
+
+    public boolean validateOverdue(LocalDateTime standard) {
+
+        return this.lastModifiedAt.plusHours(1).isBefore(standard);
     }
 }

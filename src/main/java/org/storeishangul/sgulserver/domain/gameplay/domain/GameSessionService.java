@@ -1,6 +1,9 @@
 package org.storeishangul.sgulserver.domain.gameplay.domain;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.storeishangul.sgulserver.domain.gameplay.domain.exception.GameSessionNotFoundException;
 import org.storeishangul.sgulserver.domain.gameplay.domain.model.GameSession;
@@ -60,5 +63,11 @@ public class GameSessionService {
     public GameSession saveSession(GameSession gameSession) {
 
         return gameSessionRepository.save(gameSession);
+    }
+
+    @Scheduled(cron = "0 0 * * * ?")
+    public void purgeSessionSchedule() {
+
+        gameSessionRepository.deleteActivatingAfter(LocalDateTime.now());
     }
 }
