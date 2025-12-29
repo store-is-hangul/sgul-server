@@ -15,4 +15,11 @@ public class LeaderboardElementWithRank extends LeaderboardElement{
     public static LeaderboardElementWithRank of(LeaderboardElement leaderboardElement, int rank) {
         return new LeaderboardElementWithRank(leaderboardElement.getId(), leaderboardElement.getUserName(), leaderboardElement.getScore(), rank);
     }
+
+    @Override
+    public String toString() {
+        return "LeaderboardElementWithRank{" +
+            "rank=" + rank +
+            "} " + super.toString();
+    }
 }
