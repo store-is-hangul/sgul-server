@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 import org.storeishangul.sgulserver.domain.gameplay.domain.model.GameSession;
 
+@Getter
 public class CardDrawResponse extends GameResponse {
 
     private boolean success;
