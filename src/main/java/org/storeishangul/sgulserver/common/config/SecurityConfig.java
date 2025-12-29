@@ -17,7 +17,7 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(AbstractHttpConfigurer::disable)
-            .formLogin(AbstractHttpConfigurer::disable)  // ★ 리다이렉트 제거
+            .formLogin(AbstractHttpConfigurer::disable)  // 리다이렉트 제거
             .httpBasic(AbstractHttpConfigurer::disable)
             .logout(AbstractHttpConfigurer::disable)
             .sessionManagement(sm ->

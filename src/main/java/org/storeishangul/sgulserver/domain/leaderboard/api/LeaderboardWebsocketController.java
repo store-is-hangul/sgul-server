@@ -2,33 +2,33 @@ package org.storeishangul.sgulserver.domain.leaderboard.api;
 
 import java.security.Principal;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 import org.storeishangul.sgulserver.domain.leaderboard.api.dto.request.LeaderboardSaveRequest;
+import org.storeishangul.sgulserver.domain.leaderboard.api.dto.response.LeaderboardRankResponse;
 import org.storeishangul.sgulserver.domain.leaderboard.application.LeaderboardApplicationService;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class LeaderboardWebsocketController {
 
-    private final SimpMessagingTemplate messagingTemplate;
     private final LeaderboardApplicationService leaderboardApplicationService;
 
     @MessageMapping("/leaderboard/save")
-    public void saveLeaderboard(Principal principal, SimpMessageHeaderAccessor accessor, LeaderboardSaveRequest request) {
+    @SendToUser("/queue/leaderboard/save")
+    public LeaderboardRankResponse saveLeaderboard(Principal principal, SimpMessageHeaderAccessor accessor, LeaderboardSaveRequest request) {
 
         String userId = principal.getName();
+        log.info(">>>>> saveLeaderboard called - principal: {}, sessionId: {}, userName: {}", userId, accessor.getSessionId(), request.getUserName());
 
-        messagingTemplate.convertAndSendToUser(
+        return leaderboardApplicationService.saveLeaderboardAndReturnRank(
             userId,
-            "/queue/leaderboard/save",
-            leaderboardApplicationService.saveLeaderboardAndReturnRank(
-                userId,
-                accessor.getSessionId(),
-                request.getUserName()
-            )
+            accessor.getSessionId(),
+            request.getUserName()
         );
     }
 }
