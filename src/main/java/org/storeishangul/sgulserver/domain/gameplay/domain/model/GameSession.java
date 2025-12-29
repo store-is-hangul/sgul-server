@@ -70,11 +70,11 @@ public class GameSession {
         }
     }
 
-    public void drawCards(int count) {
+    public boolean drawCards(int count) {
 
         if (getHandAndDeskCardCount() >= MAX_HAND_CARD_COUNT) {
 
-            throw new MaxCardInHandException();
+            return false;
         }
 
         while (count > 0) {
@@ -91,6 +91,8 @@ public class GameSession {
 
             count--;
         }
+
+        return true;
     }
 
     public void addPoints(int points) {

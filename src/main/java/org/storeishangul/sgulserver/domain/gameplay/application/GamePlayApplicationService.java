@@ -7,6 +7,7 @@ import org.storeishangul.sgulserver.domain.gameplay.api.dto.request.DrawRequest;
 import org.storeishangul.sgulserver.domain.gameplay.api.dto.request.OnDeskRequest;
 import org.storeishangul.sgulserver.domain.gameplay.api.dto.request.OnDeskRequest.JobsOnDeskType;
 import org.storeishangul.sgulserver.domain.gameplay.api.dto.response.CalculatePointsResponse;
+import org.storeishangul.sgulserver.domain.gameplay.api.dto.response.CardDrawResponse;
 import org.storeishangul.sgulserver.domain.gameplay.api.dto.response.GameResponse;
 import org.storeishangul.sgulserver.domain.gameplay.domain.GameSessionService;
 import org.storeishangul.sgulserver.domain.gameplay.domain.model.GameSession;
@@ -26,14 +27,13 @@ public class GamePlayApplicationService {
         return GameResponse.from(gameSession);
     }
 
-    public GameResponse drawCards(String userId, String sessionId, DrawRequest request) {
+    public CardDrawResponse drawCards(String userId, String sessionId, DrawRequest request) {
 
-        GameSession gameSession = gameSessionService.findSessionAndUpdateByUserIdOrElseThrow(userId,
-            sessionId);
-        gameSession.drawCards(request.getCounts());
+        GameSession gameSession = gameSessionService.findSessionAndUpdateByUserIdOrElseThrow(userId, sessionId);
+        boolean isDrawSuccessful = gameSession.drawCards(request.getCounts());
         gameSessionService.saveSession(gameSession);
 
-        return GameResponse.from(gameSession);
+        return CardDrawResponse.from(gameSession, isDrawSuccessful);
     }
 
     public CalculatePointsResponse calculatePoint(String userId, String sessionId) {
