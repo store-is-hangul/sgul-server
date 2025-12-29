@@ -9,6 +9,7 @@ import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 import org.storeishangul.sgulserver.domain.gameplay.api.dto.request.DrawRequest;
 import org.storeishangul.sgulserver.domain.gameplay.api.dto.request.OnDeskRequest;
+import org.storeishangul.sgulserver.domain.gameplay.api.dto.response.CardDrawResponse;
 import org.storeishangul.sgulserver.domain.gameplay.api.dto.response.GameResponse;
 import org.storeishangul.sgulserver.domain.gameplay.application.GamePlayApplicationService;
 
@@ -37,7 +38,7 @@ public class CardGameController {
 
     @MessageMapping("/game/draw")
     @SendToUser("/queue/draw")
-    public GameResponse drawCards(Principal principal, SimpMessageHeaderAccessor accessor, DrawRequest request) {
+    public CardDrawResponse drawCards(Principal principal, SimpMessageHeaderAccessor accessor, DrawRequest request) {
 
         String userId = principal.getName();
 
