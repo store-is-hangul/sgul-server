@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.ChannelInterceptor;
 
 @Slf4j
@@ -20,8 +21,16 @@ public class WebSocketLoggingInterceptorConfig implements ChannelInterceptor {
             payload = new String((byte[]) message.getPayload(), StandardCharsets.UTF_8);
         }
 
-        log.info("<<<<< STOMP OUTBOUND [{}] payload: {}", message.getHeaders().getOrDefault("simpMessageType", "UNKNOWN COMMAND"),
-            StringUtils.isBlank(payload) ? "NONE" : payload);
+        MessageHeaders headers = message.getHeaders();
+
+        log.info(
+            "<<<<< STOMP OUTBOUND [{}] destination: {}, user: {}, sessionId: {}, payload: {}",
+            headers.getOrDefault("simpMessageType", "UNKNOWN"),
+            headers.get("simpDestination"),
+            headers.get("simpUser"),
+            headers.get("simpSessionId"),
+            StringUtils.isBlank(payload) ? "NONE" : payload
+        );
 
         return message;
     }

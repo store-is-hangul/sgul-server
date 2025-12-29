@@ -23,6 +23,10 @@ public class CardGameController {
     @SendToUser("/queue/game")
     public GameResponse startGame(Principal principal, SimpMessageHeaderAccessor accessor) {
 
+        log.info(">>>>> startGame called - principal: {}, sessionId: {}",
+            principal != null ? principal.getName() : "NULL",
+            accessor.getSessionId());
+
         String userId = principal.getName();
 
         return gamePlayApplicationService.startGame(
