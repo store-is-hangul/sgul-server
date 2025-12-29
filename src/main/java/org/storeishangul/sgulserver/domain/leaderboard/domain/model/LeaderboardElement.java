@@ -5,7 +5,7 @@ import java.time.ZoneOffset;
 import lombok.Getter;
 
 @Getter
-public class LeaderboardElement implements Comparable<LeaderboardElement>{
+public class LeaderboardElement implements Comparable<LeaderboardElement> {
 
     private final String id;
     private String userName;
@@ -28,7 +28,14 @@ public class LeaderboardElement implements Comparable<LeaderboardElement>{
     @Override
     public int compareTo(LeaderboardElement o) {
 
-        return o.getScore() - this.score;
+        int scoreCompare = o.getScore() - this.score;
+
+        if (scoreCompare != 0) {
+            return scoreCompare;
+        }
+
+        // 점수가 같으면 ID로 비교하여 중복 제거 방지
+        return this.id.compareTo(o.id);
     }
 
     @Override

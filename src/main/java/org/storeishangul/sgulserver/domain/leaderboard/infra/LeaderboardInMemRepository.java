@@ -1,10 +1,9 @@
 package org.storeishangul.sgulserver.domain.leaderboard.infra;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.util.PriorityQueue;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -15,11 +14,11 @@ import org.storeishangul.sgulserver.domain.leaderboard.domain.model.LeaderboardE
 @Repository
 public class LeaderboardInMemRepository implements LeaderboardRepository {
 
-    private PriorityQueue<LeaderboardElement> leaderboard;
+    private final ConcurrentSkipListSet<LeaderboardElement> leaderboard;
 
     public LeaderboardInMemRepository() {
 
-        this.leaderboard = new PriorityQueue<>(LeaderboardElement::compareTo);
+        this.leaderboard = new ConcurrentSkipListSet<>(LeaderboardElement::compareTo);
     }
 
     @Override
@@ -31,31 +30,30 @@ public class LeaderboardInMemRepository implements LeaderboardRepository {
 
     @Override
     public void deleteById(String id) {
-
         leaderboard.removeIf(leaderboardElement -> leaderboardElement.getId().equals(id));
     }
 
     @Override
     public LeaderboardElement findById(String id) {
 
-        Optional<LeaderboardElement> targetOptional = leaderboard.stream()
-            .filter(leaderboardElement -> leaderboardElement.getId().equals(id)).findFirst();
-
-        return targetOptional.orElse(null);
+        return leaderboard.stream()
+            .filter(e -> e.getId().equals(id))
+            .findFirst()
+            .orElse(null);
     }
 
     @Override
     public LeaderboardElementWithRank findByIdWithRank(String id) {
 
-        Iterator<LeaderboardElement> iterator = leaderboard.iterator();
         int rank = 1;
-        while (iterator.hasNext()) {
-            LeaderboardElement leaderboardElement = iterator.next();
-            if (leaderboardElement.getId().equals(id)) {
-                return LeaderboardElementWithRank.of(leaderboardElement, rank);
+
+        for (LeaderboardElement element : leaderboard) {
+            if (element.getId().equals(id)) {
+                return LeaderboardElementWithRank.of(element, rank);
             }
             rank++;
         }
+
         return null;
     }
 
@@ -63,14 +61,10 @@ public class LeaderboardInMemRepository implements LeaderboardRepository {
     public List<LeaderboardElementWithRank> findTopN(int topN) {
 
         AtomicInteger rank = new AtomicInteger(1);
-        ArrayList<LeaderboardElementWithRank> result = new ArrayList<>();
 
-        while (topN > 0 && !leaderboard.isEmpty()) {
-            LeaderboardElementWithRank leaderboardElementWithRank = LeaderboardElementWithRank.of(leaderboard.poll(), rank.getAndIncrement());
-            result.add(leaderboardElementWithRank);
-            topN--;
-        }
-
-        return result;
+        return leaderboard.stream()
+            .limit(topN)
+            .map(e -> LeaderboardElementWithRank.of(e, rank.getAndIncrement()))
+            .toList();
     }
 }
