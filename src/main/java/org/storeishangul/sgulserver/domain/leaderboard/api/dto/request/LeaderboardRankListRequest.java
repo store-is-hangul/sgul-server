@@ -1,9 +1,15 @@
 package org.storeishangul.sgulserver.domain.leaderboard.api.dto.request;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Getter
+@NoArgsConstructor
 public class LeaderboardRankListRequest {
 
-    private int count;
+    private Integer count;
+
+    public Integer getCount() {
+
+        return count == null ? 10 : count;
+    }
 }
