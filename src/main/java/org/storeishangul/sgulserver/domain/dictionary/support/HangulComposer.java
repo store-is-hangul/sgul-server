@@ -128,15 +128,13 @@ public class HangulComposer {
 
             if (isVowel(cur)) {
                 // 모음으로 시작
-                Lch = '\0';
-                Vch = cur;
-                i++;
+                return null;
 
             } else if (isConsonant(cur)) {
                 // 초성 쌍자음 결합 시도 (다음이 같은 자음이고 그 다음이 모음이면 더 자연스러움)
                 if (i + 1 < n && isConsonant(jamos.get(i + 1))) {
                     Character combL = tryComposeLeading(cur, jamos.get(i + 1));
-                    // 다음 다음이 모음이면 쌍자음 확정 (IME 감각)
+                    // 다음 다음이 모음이면 쌍자음 확정
                     boolean afterIsVowel = (i + 2 < n && isVowel(jamos.get(i + 2)));
                     if (combL != null && afterIsVowel) {
                         Lch = combL;
@@ -151,9 +149,8 @@ public class HangulComposer {
                 }
 
                 if (i >= n || !isVowel(jamos.get(i))) {
-                    // 모음이 바로 안오면 독립 자음 출력
-                    out.append(Lch);
-                    continue;
+                    // 모음이 바로 안오면
+                    return null;
                 }
                 Vch = jamos.get(i);
                 i++;
