@@ -35,6 +35,7 @@ public class WebSocketExceptionHandler {
 
     private void sendErrorToUser(Principal principal, WebsocketExceptionResponse response) {
         if (principal != null) {
+            log.info("Sending error response to user: {}", principal.getName());
             messagingTemplate.convertAndSendToUser(
                 principal.getName(),
                 "/queue/errors",
