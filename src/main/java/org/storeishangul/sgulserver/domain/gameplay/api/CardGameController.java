@@ -4,100 +4,80 @@ import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
-import org.storeishangul.sgulserver.domain.gameplay.api.dto.request.CalculatePointRequest;
 import org.storeishangul.sgulserver.domain.gameplay.api.dto.request.DrawRequest;
 import org.storeishangul.sgulserver.domain.gameplay.api.dto.request.OnDeskRequest;
 import org.storeishangul.sgulserver.domain.gameplay.api.dto.response.GameResponse;
 import org.storeishangul.sgulserver.domain.gameplay.application.GamePlayApplicationService;
-import org.storeishangul.sgulserver.domain.gameplay.domain.GameSessionService;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 public class CardGameController {
 
-    private final SimpMessagingTemplate messagingTemplate;
     private final GamePlayApplicationService gamePlayApplicationService;
 
     @MessageMapping("/game/start")
-    public void startGame(Principal principal, SimpMessageHeaderAccessor accessor) {
+    @SendToUser("/queue/game")
+    public GameResponse startGame(Principal principal, SimpMessageHeaderAccessor accessor) {
 
         String userId = principal.getName();
 
-        messagingTemplate.convertAndSendToUser(
+        return gamePlayApplicationService.startGame(
             userId,
-            "/queue/game",
-            gamePlayApplicationService.startGame(
-                userId,
-                accessor.getSessionId()
-            )
+            accessor.getSessionId()
         );
     }
 
     @MessageMapping("/game/draw")
-    public void drawCards(Principal principal, SimpMessageHeaderAccessor accessor, DrawRequest request) {
+    @SendToUser("/queue/draw")
+    public GameResponse drawCards(Principal principal, SimpMessageHeaderAccessor accessor, DrawRequest request) {
 
         String userId = principal.getName();
 
-        messagingTemplate.convertAndSendToUser(
+        return gamePlayApplicationService.drawCards(
             userId,
-            "/queue/draw",
-            gamePlayApplicationService.drawCards(
-                userId,
-                accessor.getSessionId(),
-                request
-            )
+            accessor.getSessionId(),
+            request
         );
     }
 
     @MessageMapping("/game/desk")
-    public void processJobsOnDesk(Principal principal, SimpMessageHeaderAccessor accessor, OnDeskRequest request) {
+    @SendToUser("/queue/desk")
+    public GameResponse processJobsOnDesk(Principal principal, SimpMessageHeaderAccessor accessor, OnDeskRequest request) {
 
         String userId = principal.getName();
 
-        messagingTemplate.convertAndSendToUser(
+        return gamePlayApplicationService.processJobsOnDesk(
             userId,
-            "/queue/desk",
-            gamePlayApplicationService.processJobsOnDesk(
-                userId,
-                accessor.getSessionId(),
-                request
-            )
+            accessor.getSessionId(),
+            request
         );
     }
 
     @MessageMapping("/game/point")
-    public void calculatePoints(Principal principal, SimpMessageHeaderAccessor accessor) {
+    @SendToUser("/queue/point")
+    public GameResponse calculatePoints(Principal principal, SimpMessageHeaderAccessor accessor) {
 
         String userId = principal.getName();
 
-        messagingTemplate.convertAndSendToUser(
+        return gamePlayApplicationService.calculatePoint(
             userId,
-            "/queue/point",
-            gamePlayApplicationService.calculatePoint(
-                userId,
-                accessor.getSessionId()
-            )
+            accessor.getSessionId()
         );
     }
 
     @MessageMapping("/game/over")
-    public void finishTheGame(Principal principal, SimpMessageHeaderAccessor accessor) {
+    @SendToUser("/queue/over")
+    public GameResponse finishTheGame(Principal principal, SimpMessageHeaderAccessor accessor) {
 
         String userId = principal.getName();
 
-        messagingTemplate.convertAndSendToUser(
+        return gamePlayApplicationService.finishTheGame(
             userId,
-            "/queue/over",
-            gamePlayApplicationService.finishTheGame(
-                userId,
-                accessor.getSessionId()
-            )
+            accessor.getSessionId()
         );
     }
 }
