@@ -6,5 +6,4 @@ import lombok.Getter;
 public class LeaderboardSaveRequest {
 
     private String userName;
-    private int score;
 }

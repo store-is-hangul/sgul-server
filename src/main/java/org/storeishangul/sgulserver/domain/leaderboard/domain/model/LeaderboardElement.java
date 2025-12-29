@@ -30,4 +30,13 @@ public class LeaderboardElement implements Comparable<LeaderboardElement>{
 
         return o.getScore() - this.score;
     }
+
+    @Override
+    public String toString() {
+        return "LeaderboardElement{" +
+            "id='" + id + '\'' +
+            ", userName='" + userName + '\'' +
+            ", score=" + score +
+            '}';
+    }
 }

@@ -3,6 +3,7 @@ package org.storeishangul.sgulserver.domain.leaderboard.api;
 import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.storeishangul.sgulserver.domain.leaderboard.api.dto.request.LeaderboardSaveRequest;
@@ -16,7 +17,7 @@ public class LeaderboardWebsocketController {
     private final LeaderboardApplicationService leaderboardApplicationService;
 
     @MessageMapping("/leaderboard/save")
-    public void saveLeaderboard(Principal principal, LeaderboardSaveRequest request) {
+    public void saveLeaderboard(Principal principal, SimpMessageHeaderAccessor accessor, LeaderboardSaveRequest request) {
 
         String userId = principal.getName();
 
@@ -25,8 +26,8 @@ public class LeaderboardWebsocketController {
             "/queue/leaderboard/save",
             leaderboardApplicationService.saveLeaderboardAndReturnRank(
                 userId,
-                request.getUserName(),
-                request.getScore()
+                accessor.getSessionId(),
+                request.getUserName()
             )
         );
     }
