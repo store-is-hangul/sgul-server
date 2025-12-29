@@ -16,7 +16,7 @@ public class LeaderboardInMemRepository implements LeaderboardRepository {
 
     public LeaderboardInMemRepository() {
 
-        this.leaderboard = new PriorityQueue<>();
+        this.leaderboard = new PriorityQueue<>(LeaderboardElement::compareTo);
     }
 
     @Override
