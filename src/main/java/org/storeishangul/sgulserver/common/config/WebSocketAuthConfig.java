@@ -53,7 +53,7 @@ public class WebSocketAuthConfig implements ChannelInterceptor {
             String userId = accessor.getFirstNativeHeader("userId");
 
             if (userId != null) {
-                // 세션 속성에 userId 저장 (중요!)
+                // 세션 속성에 userId 저장
                 Map<String, Object> sessionAttributes = accessor.getSessionAttributes();
                 if (sessionAttributes != null) {
                     sessionAttributes.put("userId", userId);
