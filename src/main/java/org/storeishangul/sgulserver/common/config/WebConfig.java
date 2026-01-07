@@ -13,7 +13,8 @@ public class WebConfig implements WebMvcConfigurer {
             .allowedOrigins(
                 "http://localhost:3000",
                 "http://127.0.0.1:3000",
-                "https://sgul-client.vercel.app"
+                "https://sgul-client.vercel.app",
+                "http://tauri.localhost/"
             )
             .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD")
             .allowCredentials(true)

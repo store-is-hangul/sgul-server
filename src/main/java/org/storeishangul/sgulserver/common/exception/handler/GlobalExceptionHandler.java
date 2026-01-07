@@ -27,6 +27,12 @@ import org.storeishangul.sgulserver.domain.leaderboard.domain.exception.Leaderbo
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(NoResourceFoundException.class)
+    public void handleNoResourceFoundException(MethodArgumentNotValidException e) {
+
+        log.warn("NoResourceFoundException...");
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<RestResponse<Map<String, String>>> handleMethodArgumentNotValidException(
         MethodArgumentNotValidException e) {
