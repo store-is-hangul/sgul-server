@@ -28,7 +28,7 @@ import org.storeishangul.sgulserver.domain.leaderboard.domain.exception.Leaderbo
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoResourceFoundException.class)
-    public void handleNoResourceFoundException(MethodArgumentNotValidException e) {
+    public void handleNoResourceFoundException(NoResourceFoundException e) {
 
         log.warn("NoResourceFoundException...");
     }
